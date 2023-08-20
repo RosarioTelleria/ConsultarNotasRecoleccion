@@ -10,7 +10,7 @@ namespace ConsultarNotasRecoleccion.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            _logger = logger; /*esto es una prueba*/
         }
 
         public IActionResult Index()
