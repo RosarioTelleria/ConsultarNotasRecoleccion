@@ -71,12 +71,11 @@ namespace ConsultarNotasRecoleccion.Controllers
 
         public ActionResult LoginAccess(Usuario oUsuario)
         {
-            oUsuario.Clave = ConvertirSHA256(oUsuario.Clave);
+            //oUsuario.Clave = ConvertirSHA256(oUsuario.Clave);
             using (SqlConnection cn = new SqlConnection(cadena))
             {
                 SqlCommand cmd = new SqlCommand("sp_ValidarUsuario", cn);
-                cmd.Parameters.AddWithValue("Correo", oUsuario.Correo);
-                cmd.Parameters.AddWithValue("Clave", oUsuario.Clave);
+                cmd.Parameters.AddWithValue("CodAlumna", oUsuario.Clave);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cn.Open();
@@ -87,7 +86,7 @@ namespace ConsultarNotasRecoleccion.Controllers
             if (oUsuario.IdUsuario != 0)
             {
                 Session = oUsuario;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.Clave });
 
             }
             else

@@ -1,4 +1,5 @@
-﻿using ConsultarNotasRecoleccion.Models;
+﻿using ConsultarNotasRecoleccion.DataAccess;
+using ConsultarNotasRecoleccion.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -13,9 +14,13 @@ namespace ConsultarNotasRecoleccion.Controllers
             _logger = logger; /*esto es una prueba*/
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string codAlumna)
         {
-            return View();
+            HomeDataAccess data = new();
+            List<Calificaciones> listCalificacionesPorAlumna = new();
+            listCalificacionesPorAlumna = data.ObtenerCalificacionPorAlumno(codAlumna);
+
+            return View(listCalificacionesPorAlumna);
         }
 
         public IActionResult Privacy()
