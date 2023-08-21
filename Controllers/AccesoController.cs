@@ -13,7 +13,7 @@ namespace ConsultarNotasRecoleccion.Controllers
     {
         static string cadena = "Server=localhost;Database=ESTADISTICA;Trusted_Connection=True;TrustServerCertificate=True;";
 
-        public Usuario Session { get; private set; }
+        //public Usuario Session { get; private set; }
 
         public ActionResult Login()
         {
@@ -86,7 +86,7 @@ namespace ConsultarNotasRecoleccion.Controllers
 
             if (oUsuario.IdUsuario != 0)
             {
-                Session = oUsuario;
+                //Session = oUsuario;
                 return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.Clave });
 
             }

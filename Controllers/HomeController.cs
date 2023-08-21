@@ -1,6 +1,7 @@
 ﻿using ConsultarNotasRecoleccion.DataAccess;
 using ConsultarNotasRecoleccion.Models;
 using Microsoft.AspNetCore.Mvc;
+using Renci.SshNet;
 using System.Diagnostics;
 
 namespace ConsultarNotasRecoleccion.Controllers
@@ -28,7 +29,13 @@ namespace ConsultarNotasRecoleccion.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult CerrarSesion()
+		{
+			//Session["usuario"] = null;
+            return RedirectToAction("login","Acceso");
+		}
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
