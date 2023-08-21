@@ -17,7 +17,8 @@ namespace ConsultarNotasRecoleccion.Controllers
 
         public ActionResult Login()
         {
-            return View();
+			ViewBag.UsarioNoValido = false;
+			return View();
         }
         public ActionResult Registar()
         {
@@ -91,8 +92,9 @@ namespace ConsultarNotasRecoleccion.Controllers
             }
             else
             {
-                ViewData["Mensaje"] = "Usuario no encontrado";
-                return View();
+                //ViewBag.Mensaje = "Usuario no encontrado";
+                ViewBag.UsarioNoValido = true;
+                return View("Login");
             }
         }
 

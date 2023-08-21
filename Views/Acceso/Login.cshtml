@@ -1,5 +1,7 @@
 ﻿@{
-    Layout = null;
+	Layout = null;
+	var usarionovalido = ViewBag.UsarioNoValido;
+
 }
 
 <!DOCTYPE html>
@@ -34,8 +36,12 @@
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
 							<input type="text" name="Clave" class="form-control input_pass" value="" placeholder="Codigo de Alumno(a)">
+							
 						</div>
-						
+						@if (@usarionovalido == true)
+						{
+							<p>Usuario no encontrado</p>
+						}
 						<div class="d-flex justify-content-center mt-3 login_container">
 							<button type="submit" name="button" class="btn login_btn">Iniciar</button>
 						</div>
