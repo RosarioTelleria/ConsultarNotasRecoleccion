@@ -3,18 +3,20 @@ using ConsultarNotasRecoleccion.Models;
 using Microsoft.AspNetCore.Mvc;
 using Renci.SshNet;
 using System.Diagnostics;
-
+using ConsultarNotasRecoleccion.Permisos;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 namespace ConsultarNotasRecoleccion.Controllers
 {
-   
+    [ValidarSession]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger; /*esto es una prueba*/
+            _logger = logger; 
         }
 
         public IActionResult Index(string codAlumna)
@@ -33,7 +35,8 @@ namespace ConsultarNotasRecoleccion.Controllers
 
 		public IActionResult CerrarSesion()
 		{
-			//Session["usuario"] = null;
+            //Session["usuario"] = null;
+           
             return RedirectToAction("login","Acceso");
 		}
 

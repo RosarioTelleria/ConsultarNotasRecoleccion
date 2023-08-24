@@ -25,51 +25,6 @@ namespace ConsultarNotasRecoleccion.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Registar(Usuario oUsuarios)
-        {
-            bool registrado;
-            string mensaje;
-            if (oUsuarios.Clave == oUsuarios.ConfirmarClave)
-            {
-                oUsuarios.Clave = ConvertirSHA256(oUsuarios.Clave);
-            }
-            else
-            {
-                ViewData["Mensaje"] = "Las contrasenas no coinciden";
-                return View();
-            }
-            using (SqlConnection cn = new SqlConnection(cadena))
-            {
-                SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", cn);
-                cmd.Parameters.AddWithValue("Correo", oUsuarios.Correo);
-                cmd.Parameters.AddWithValue("Clave", oUsuarios.Clave);
-                cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cn.Open();
-                cmd.ExecuteNonQuery();
-
-                registrado = Convert.ToBoolean(cmd.Parameters["Registrado"].Value);
-                mensaje = cmd.Parameters["Mensaje"].Value.ToString();
-
-
-            }
-
-            ViewData["Mensaje"] = "Las contrasenas no coinciden";
-            if (registrado)
-            {
-                return RedirectToAction("Login", "Acceso");
-
-
-            }
-            else
-            {
-                return View();
-            }
-        }
-
         public ActionResult LoginAccess(Usuario oUsuario)
         {
             //oUsuario.Clave = ConvertirSHA256(oUsuario.Clave);
@@ -86,36 +41,38 @@ namespace ConsultarNotasRecoleccion.Controllers
 
             if (oUsuario.IdUsuario != 0)
             {
-                //Session = oUsuario;
-                return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.Clave });
+                List<Bimensuales> respuesta = new List<Bimensuales>();
 
+                using (SqlConnection cn = new SqlConnection(cadena))
+                {
+                    
+                    SqlCommand cmd = new SqlCommand("sp_ValidarAranceles", cn);
+                    cmd.Parameters.AddWithValue("CodAlumna", oUsuario.Clave);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        
+                        Bimensuales temp = new Bimensuales();
+                        temp.Parcial = reader["Parcial"] + "";
+                        temp.Aplica =(bool)reader["Aplica"];
+                        respuesta.Add(temp);
+                    }
+                   
+                    //oUsuario.IdUsuario = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+                }
+               
+                return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.Clave });
             }
             else
             {
-                //ViewBag.Mensaje = "Usuario no encontrado";
+                ViewBag.Mensaje = "Usuario no encontrado";
                 ViewBag.UsarioNoValido = true;
                 return View("Login");
             }
         }
-
-        public static string ConvertirSHA256(string texto)
-        {
-
-            StringBuilder sb = new StringBuilder();
-            using (SHA256 hash = SHA256.Create())
-            {
-                Encoding enc = Encoding.UTF8;
-                byte[] result = hash.ComputeHash(enc.GetBytes(texto));
-                foreach (byte b in result)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
-                return sb.ToString();
-            }
-
-        }
-
-
-
     }
 }
