@@ -87,7 +87,7 @@ namespace ConsultarNotasRecoleccion.Controllers
 
                 }
                
-                return RedirectToAction("ViewsIBimensual", "Home", new { codAlumna = oUsuario.Clave });
+                return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.Clave });
             }
             else
             {

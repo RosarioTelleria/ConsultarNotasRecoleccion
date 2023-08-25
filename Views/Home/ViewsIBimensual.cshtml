@@ -1,15 +1,29 @@
 ﻿@model List<ConsultarNotasRecoleccion.Models.Calificaciones>
 @{
     ViewData["Title"] = "Notas";
-    var suma = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.PsPrimeraEvalucionParcial).ToString("N");
-    var promedio = Math.Round(Convert.ToDecimal(suma) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
+    var sumaIB = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.PsPrimeraEvalucionParcial).ToString("N");
+    var promedioIB = Math.Round(Convert.ToDecimal(sumaIB) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
+
+    var sumaIIB = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.PsSegundaEvaluacionParcial).ToString("N");
+    var promedioIIB = Math.Round(Convert.ToDecimal(sumaIIB) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
+
+
+    var sumaIIIB = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.SsPrimeraEvalucionParcial).ToString("N");
+    var promedioIIIB = Math.Round(Convert.ToDecimal(sumaIIIB) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
+
+
+    var sumaIVB = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.SsSegundaEvaluacionParcial).ToString("N");
+    var promedioIVB = Math.Round(Convert.ToDecimal(sumaIVB) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
+
+    var sumaNF = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.SsSegundaEvaluacionParcial).ToString("N");
+    var promedioNF = Math.Round(Convert.ToDecimal(sumaNF) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
     
 }
 
-<div class="card">
+<div  class="card ">
     <div class="d-flex justify-content-center text-center">
-        <div background-color: yellow;"><img src="~/lib/insig.png" /></div>
-        <div background-color: red;">
+        <div><img src="~/lib/insig.png" /></div>
+        <div>
             <h2>CENTRO ESCOLAR LA RECOLECCION</h2>
             <h3>1880 22 DE NOVIEMBRE - 2023</h3>
             <h3>BOLETIN</h3>
@@ -19,24 +33,22 @@
 
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col col-4">
+        <div class="row display: flex flex-direction: row flex-wrap:wrap" >
+            <div class="col col-4 p-3 mb-2 bg-secondary text-white" style="margin-bottom: 0px !important;">
                 <b> CODIGO: </b>@Model[0].CodigoAlumna
             </div>
-            <div class="col col-4" style="text-align:center;">
+           <div class="col col-4 p-3 mb-2 bg-secondary text-white" style="text-align:center; margin-bottom: 0px !important;">
                 <b>ALUMNA:</b> @Model[0].Alumnas
             </div>
-            <div class="col col-4" style="text-align:right;">
+            <div class="col col-4 p-3 mb-2 bg-secondary text-white" style="text-align:right; margin-bottom: 0px !important;">
                 <b>GRADO: </b> @Model[0].Grado
             </div>
-        </div>
-        <div class="row">
-            <div class="col col-6">
+            <div class="col col-6 p-3 mb-2 bg-secondary text-white">
                 <b>PROFESOR GUIA: </b>@Model[0].ProfesorGuia
             </div>
-            <div class="col col-6" style="text-align:right; padding-right:50px ">
+            <div class="col col-6 p-3 mb-2 bg-secondary text-white" style="text-align:right; padding-right:50px ">
                 <b>SECCION:</b> @Model[0].Aula
-            </div>
+            </div> 
         </div>
         <div class="row">
             <table class="table table-bordered">
@@ -45,13 +57,38 @@
                         <th>
                             ASIGNATURAS
                         </th>
+                        <th style="text-align:center;">
+                            IB
+                        </th>
+                        <th style="text-align:center;">
+                            Cat
+                        </th style="text-align:center;">
                         <th>
                             IIB
                         </th>
-                        <th>
+                        <th style="text-align:center;">
+                            Cat
+                        </th>
+                        <th style="text-align:center;">
+                            IIIB
+                        </th>
+                        <th style="text-align:center;">
+                            Cat
+                        </th >
+                        <th style="text-align:center;">
+                            IVB
+                        </th>
+                        <th style="text-align:center;">
+                            Cat
+                        </th>
+                        <th style="text-align:center;">
+                            NF
+                        </th>
+                        <th style="text-align:center;">
                             Cat
                         </th>
                     </tr>
+
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
@@ -62,22 +99,77 @@
                                 <td>
                                     @item.Asignatura
                                 </td>
-                                <td>
+                                <td style="text-align:center;">
+                                    @item.PsPrimeraEvalucionParcial
+                                </td>
+                                <td style="text-align:center;">
+                                    @item.Cat1p 
+                                </td>
+                                <td style="text-align:center;">
+                                    @item.PsSegundaEvaluacionParcial
+                                </td >
+                                <td style="text-align:center;">
+                                    @item.Cat2p
+                                </td>
+                                <td style="text-align:center;">
+                                    @item.SsPrimeraEvalucionParcial
+                                </td>
+                                <td style="text-align:center;">
+                                    @item.Cat3p
+                                </td>
+                                <td style="text-align:center;">
                                     @item.SsSegundaEvaluacionParcial
                                 </td>
-                                <td>
-                                    @item.Cat2p
+                                <td style="text-align:center;">
+                                    @item.Cat4p
+                                </td>
+                                <td style="text-align:center;">
+                                    @item.NotaFinal
+                                </td>
+                                <td style="text-align:center;">
+                                    @item.Catnf
                                 </td>
                             </tr>
                         }
                     }
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td></td>
+                    <tr class="p-3 mb-2 bg-secondary text-white">
                         <td>PROMEDIO</td>
-                        <td>@promedio %</td>
+                       
+                        <td style="text-align:center;" >
+                            @promedioIB %
+                        </td>
+                        <td style="text-align:center;">
+                            ---
+                        </td>
+                        <td style="text-align:center;">
+                            @promedioIIB %
+                        </td>
+                        <td style="text-align:center;">
+                            ---
+                        </td>
+                        <td style="text-align:center;">
+                            @promedioIIIB %
+                        </td>
+                        <td style="text-align:center;">
+                            ---
+                        </td>
+                        <td style="text-align:center;">
+                            @promedioIVB %
+                        </td>
+                        <td style="text-align:center;">
+                            ---
+                        </td>
+                        <td style="text-align:center;">
+                            @promedioNF %
+                        </td>
+                         <td style="text-align:center;">
+                            ---
+                        </td>
+                       
                     </tr>
+
                 </tfoot>
             </table>
             <table>

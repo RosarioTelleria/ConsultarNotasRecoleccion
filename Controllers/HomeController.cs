@@ -19,7 +19,7 @@ namespace ConsultarNotasRecoleccion.Controllers
             _logger = logger; 
         }
 
-        public IActionResult Index(string codAlumna)
+        public IActionResult Index(decimal codAlumna)
         {
             HomeDataAccess data = new();
             List<Calificaciones> listCalificacionesPorAlumna = new();
@@ -27,7 +27,7 @@ namespace ConsultarNotasRecoleccion.Controllers
 
             return View(listCalificacionesPorAlumna);
         }
-        public IActionResult ViewsIBimensual(string codAlumna)
+        public IActionResult ViewsIBimensual(decimal codAlumna)
         {
             HomeDataAccess data = new();
             List<Calificaciones> listCalificacionesPorAlumna = new();

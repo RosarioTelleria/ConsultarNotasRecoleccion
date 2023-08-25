@@ -160,7 +160,7 @@ namespace ConsultarNotasRecoleccion.DataAccess
         /// </summary>
         /// <param name="codigoAlumna"></param>
         /// <returns>Retorna las notas de una alumna</returns>
-        public List<Calificaciones> ObtenerCalificacionPorAlumno(string codigoAlumna)
+        public List<Calificaciones> ObtenerCalificacionPorAlumno(decimal codigoAlumna)
         {
             List<Calificaciones> respuesta = new List<Calificaciones>();
 
@@ -225,10 +225,10 @@ namespace ConsultarNotasRecoleccion.DataAccess
                                 ,codigo_categoria
                                 ,categoria 
                                 from calificaciones 
-                                where codigo_alumna = @codigoAlumna";
+                                where codigo_alumna = @codigo_alumna";
 
                 SqlCommand cmd = new SqlCommand(query, cn);
-                cmd.Parameters.AddWithValue("@codigoAlumna", codigoAlumna);
+                cmd.Parameters.AddWithValue("@codigo_alumna", codigoAlumna);
 
                 cmd.CommandType = CommandType.Text;
 
