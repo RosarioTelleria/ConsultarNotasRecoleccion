@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<ConsultarNotasRecoleccion.Models.Calificaciones>
+@{
 	Layout = null;
 	var usarionovalido = ViewBag.UsarioNoValido;
 
@@ -25,12 +26,7 @@
 				</div>
 				<div class="d-flex justify-content-center form_container">
 					<form action="@Url.Action("LoginAccess","Acceso")" method="post">
-						 <div class="input-group mb-3">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-envelope"></i></span>
-							</div>
-							<input type="text" name="Correo" class="form-control input_user" value="" placeholder="Correo">
-						</div> 
+						  
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -42,6 +38,31 @@
 						{
 						<p>@ViewBag.Mensaje</p>
 						}
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"> <i class="fa-solid fa-calendar-day"></i></span>
+                                <select class="form-select" aria-label="Default select example">
+									<option selected>Seleccione el Año Escolar</option>
+									@foreach (var item in Model)
+									{
+									<option value="1">@item.AñoLectivo</option>
+									}
+								</select>
+							</div>
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"> <i class="fa-solid fa-clipboard"></i></span>
+								<select class="form-select" aria-label="Default select example">
+									<option selected>Seleccione el Bimensual</option>
+										<option value="1">IB</option>
+										<option value="2">IIB</option>
+										<option value="3">IIIB</option>
+										<option value="4">IVB</option>
+										<option value="5">NotaFinal</option>
+								</select>
+							</div>
+						</div>
 						<div class="d-flex justify-content-center mt-3 login_container">
 							<button type="submit" name="button" class="btn login_btn">Iniciar</button>
 						</div>

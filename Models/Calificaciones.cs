@@ -1,4 +1,7 @@
-﻿namespace ConsultarNotasRecoleccion.Models
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ConsultarNotasRecoleccion.Models
 {
     public class Calificaciones
     {
@@ -234,5 +237,8 @@
         /// TRIAL
         /// </summary>
         public string Categoria { get; set; }
+
+
+       
     }
 }

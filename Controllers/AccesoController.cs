@@ -15,11 +15,33 @@ namespace ConsultarNotasRecoleccion.Controllers
 
         //public Usuario Session { get; private set; }
 
+
         public ActionResult Login()
         {
-			ViewBag.UsarioNoValido = false;
-			return View();
-        }
+            ViewBag.UsarioNoValido = false;
+            List<Calificaciones> resul = new List<Calificaciones>();
+            using (SqlConnection cn = new SqlConnection(cadena))
+            {
+                string query = @"select año_lectivo from calificaciones group by año_lectivo";
+
+                SqlCommand cmd = new SqlCommand(query, cn);
+
+                cmd.CommandType = CommandType.Text;
+
+                cn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Calificaciones temp = new Calificaciones();
+                    temp.AñoLectivo = (decimal)reader["año_lectivo"];
+                    resul.Add(temp);
+                }
+                return View(resul);
+            }
+		}
+    
+
         public ActionResult Registar()
         {
             return View();
@@ -65,7 +87,7 @@ namespace ConsultarNotasRecoleccion.Controllers
 
                 }
                
-                return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.Clave });
+                return RedirectToAction("ViewsIBimensual", "Home", new { codAlumna = oUsuario.Clave });
             }
             else
             {

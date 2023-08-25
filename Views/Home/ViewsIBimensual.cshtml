@@ -1,0 +1,108 @@
+﻿@model List<ConsultarNotasRecoleccion.Models.Calificaciones>
+@{
+    ViewData["Title"] = "Notas";
+    var suma = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.PsPrimeraEvalucionParcial).ToString("N");
+    var promedio = Math.Round(Convert.ToDecimal(suma) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
+    
+}
+
+<div class="card">
+    <div class="d-flex justify-content-center text-center">
+        <div background-color: yellow;"><img src="~/lib/insig.png" /></div>
+        <div background-color: red;">
+            <h2>CENTRO ESCOLAR LA RECOLECCION</h2>
+            <h3>1880 22 DE NOVIEMBRE - 2023</h3>
+            <h3>BOLETIN</h3>
+            <h5>AÑO LECTIVO @Model[0].AñoLectivo</h5>
+        </div>
+        <div><img src="~/lib/untitled.png" /><img src="~/lib/sv.png" /> </div>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col col-4">
+                <b> CODIGO: </b>@Model[0].CodigoAlumna
+            </div>
+            <div class="col col-4" style="text-align:center;">
+                <b>ALUMNA:</b> @Model[0].Alumnas
+            </div>
+            <div class="col col-4" style="text-align:right;">
+                <b>GRADO: </b> @Model[0].Grado
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-6">
+                <b>PROFESOR GUIA: </b>@Model[0].ProfesorGuia
+            </div>
+            <div class="col col-6" style="text-align:right; padding-right:50px ">
+                <b>SECCION:</b> @Model[0].Aula
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            ASIGNATURAS
+                        </th>
+                        <th>
+                            IIB
+                        </th>
+                        <th>
+                            Cat
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.CodigoCategoria != 0)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Asignatura
+                                </td>
+                                <td>
+                                    @item.SsSegundaEvaluacionParcial
+                                </td>
+                                <td>
+                                    @item.Cat2p
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>PROMEDIO</td>
+                        <td>@promedio %</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            ASPECTOS OBSERVABLES
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.CodigoCategoria == 0)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Asignatura
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

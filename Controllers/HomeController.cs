@@ -27,6 +27,14 @@ namespace ConsultarNotasRecoleccion.Controllers
 
             return View(listCalificacionesPorAlumna);
         }
+        public IActionResult ViewsIBimensual(string codAlumna)
+        {
+            HomeDataAccess data = new();
+            List<Calificaciones> listCalificacionesPorAlumna = new();
+            listCalificacionesPorAlumna = data.ObtenerCalificacionPorAlumno(codAlumna);
+
+            return View(listCalificacionesPorAlumna);
+        }
 
         public IActionResult Privacy()
         {
@@ -45,5 +53,7 @@ namespace ConsultarNotasRecoleccion.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+       
     }
 }
