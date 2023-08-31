@@ -19,26 +19,33 @@ namespace ConsultarNotasRecoleccion.Controllers
         public ActionResult Login()
         {
             ViewBag.UsarioNoValido = false;
-            List<Calificaciones> resul = new List<Calificaciones>();
-            using (SqlConnection cn = new SqlConnection(cadena))
-            {
-                string query = @"select año_lectivo from calificaciones group by año_lectivo";
+            List<decimal> listaniolectivo = new List<decimal>();
+			listaniolectivo = ObtenerAnioLectivos();
+			return View(listaniolectivo);
 
-                SqlCommand cmd = new SqlCommand(query, cn);
+		}
 
-                cmd.CommandType = CommandType.Text;
+        public List<decimal> ObtenerAnioLectivos()
+        {
+			List<decimal> listaniolectivo = new List<decimal>();
 
-                cn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
+			using (SqlConnection cn = new SqlConnection(cadena))
+			{
+				string query = @"select año_lectivo from calificaciones group by año_lectivo";
 
-                while (reader.Read())
-                {
-                    Calificaciones temp = new Calificaciones();
-                    temp.AñoLectivo = (decimal)reader["año_lectivo"];
-                    resul.Add(temp);
-                }
-                return View(resul);
-            }
+				SqlCommand cmd = new SqlCommand(query, cn);
+
+				cmd.CommandType = CommandType.Text;
+
+				cn.Open();
+				SqlDataReader reader = cmd.ExecuteReader();
+
+				while (reader.Read())
+				{
+					listaniolectivo.Add((decimal)reader["año_lectivo"]);
+				}
+                return listaniolectivo;
+			}
 		}
     
 
@@ -49,11 +56,13 @@ namespace ConsultarNotasRecoleccion.Controllers
 
         public ActionResult LoginAccess(Usuario oUsuario)
         {
-            //oUsuario.Clave = ConvertirSHA256(oUsuario.Clave);
-            using (SqlConnection cn = new SqlConnection(cadena))
+			List<decimal> listaniolectivo = new List<decimal>();
+			listaniolectivo = ObtenerAnioLectivos();
+			//oUsuario.Clave = ConvertirSHA256(oUsuario.Clave);
+			using (SqlConnection cn = new SqlConnection(cadena))
             {
                 SqlCommand cmd = new SqlCommand("sp_ValidarUsuario", cn);
-                cmd.Parameters.AddWithValue("CodAlumna", oUsuario.Clave);
+                cmd.Parameters.AddWithValue("CodAlumna", oUsuario.CodigoAlumno);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cn.Open();
@@ -63,13 +72,13 @@ namespace ConsultarNotasRecoleccion.Controllers
 
             if (oUsuario.IdUsuario != 0)
             {
-                List<Bimensuales> respuesta = new List<Bimensuales>();
+                List<Bimensuales> listaBimensual = new List<Bimensuales>();
 
-                using (SqlConnection cn = new SqlConnection(cadena))
+				using (SqlConnection cn = new SqlConnection(cadena))
                 {
                     
                     SqlCommand cmd = new SqlCommand("sp_ValidarAranceles", cn);
-                    cmd.Parameters.AddWithValue("CodAlumna", oUsuario.Clave);
+                    cmd.Parameters.AddWithValue("CodAlumna", oUsuario.CodigoAlumno);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cn.Open();
@@ -80,20 +89,30 @@ namespace ConsultarNotasRecoleccion.Controllers
                         Bimensuales temp = new Bimensuales();
                         temp.Parcial = reader["Parcial"] + "";
                         temp.Aplica =(bool)reader["Aplica"];
-                        respuesta.Add(temp);
+						listaBimensual.Add(temp);
                     }
                    
                     //oUsuario.IdUsuario = Convert.ToInt32(cmd.ExecuteScalar().ToString());
 
                 }
-               
-                return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.Clave });
-            }
+                
+                bool aplica = listaBimensual.Where(y => y.Parcial == oUsuario.Bimensual).Select(x => x.Aplica).FirstOrDefault();
+                if(aplica)
+                { 
+				    return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.CodigoAlumno });
+                }
+                else
+                {
+					ViewBag.Mensaje = "No esta al dia, para ese Bimensual";
+					ViewBag.UsarioNoValido = true;
+					return View("Login", listaniolectivo);
+				}
+			}
             else
             {
                 ViewBag.Mensaje = "Usuario no encontrado";
                 ViewBag.UsarioNoValido = true;
-                return View("Login");
+                return View("Login", listaniolectivo);
             }
         }
     }

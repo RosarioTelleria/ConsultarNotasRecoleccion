@@ -9,9 +9,8 @@ namespace ConsultarNotasRecoleccion.Models
     {
         public int IdUsuario{ get; set; }
 
-        public string Correo { get; set; }
-        public string Clave { get; set; }
-
-        public string ConfirmarClave { get; set; }
+        public string CodigoAlumno { get; set; }
+        public string AnioEscolar { get; set; }
+        public string Bimensual { get; set; }
     }
 }

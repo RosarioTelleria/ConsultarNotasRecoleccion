@@ -1,8 +1,8 @@
-﻿@model List<ConsultarNotasRecoleccion.Models.Calificaciones>
+﻿@model List<decimal>
 @{
 	Layout = null;
 	var usarionovalido = ViewBag.UsarioNoValido;
-
+	var mensaje = ViewBag.Mensaje;
 }
 
 <!DOCTYPE html>
@@ -31,21 +31,21 @@
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
-							<input type="text" name="Clave" class="form-control input_pass" value="" placeholder="Codigo de Alumno(a)">
+							<input type="text" name="CodigoAlumno" class="form-control input_pass" value="" placeholder="Codigo de Alumno(a)">
 							
 						</div>
 						@if (usarionovalido != null)
 						{
-						<p>@ViewBag.Mensaje</p>
+							<p>@mensaje</p>
 						}
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"> <i class="fa-solid fa-calendar-day"></i></span>
-                                <select class="form-select" aria-label="Default select example">
+                                <select name="AnioEscolar" class="form-select" aria-label="Default select example">
 									<option selected>Seleccione el Año Escolar</option>
 									@foreach (var item in Model)
 									{
-									<option value="1">@item.AñoLectivo</option>
+										<option value="@item">@item</option>
 									}
 								</select>
 							</div>
@@ -53,13 +53,13 @@
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"> <i class="fa-solid fa-clipboard"></i></span>
-								<select class="form-select" aria-label="Default select example">
+								<select name="Bimensual" class="form-select" aria-label="Default select example">
 									<option selected>Seleccione el Bimensual</option>
-										<option value="1">IB</option>
-										<option value="2">IIB</option>
-										<option value="3">IIIB</option>
-										<option value="4">IVB</option>
-										<option value="5">NotaFinal</option>
+									<option value="IB">IB</option>
+									<option value="IIB">IIB</option>
+									<option value="IIIB">IIIB</option>
+									<option value="IVB">IVB</option>
+									<option value="NF">NotaFinal</option>
 								</select>
 							</div>
 						</div>
