@@ -99,7 +99,7 @@ namespace ConsultarNotasRecoleccion.Controllers
                 bool aplica = listaBimensual.Where(y => y.Parcial == oUsuario.Bimensual).Select(x => x.Aplica).FirstOrDefault();
                 if(aplica)
                 { 
-				    return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.CodigoAlumno });
+				    return RedirectToAction("Index", "Home", new { codAlumna = oUsuario.CodigoAlumno, Bimensual = oUsuario.Bimensual });
                 }
                 else
                 {

@@ -19,13 +19,14 @@ namespace ConsultarNotasRecoleccion.Controllers
             _logger = logger; 
         }
 
-        public IActionResult Index(decimal codAlumna)
+        public IActionResult Index(decimal codAlumna, string Bimensual)
         {
             HomeDataAccess data = new();
             List<Calificaciones> listCalificacionesPorAlumna = new();
             listCalificacionesPorAlumna = data.ObtenerCalificacionPorAlumno(codAlumna);
 
-            return View(listCalificacionesPorAlumna);
+            ViewBag.Bimensual = Bimensual;
+            return View(listCalificacionesPorAlumna); 
         }
         public IActionResult ViewsIBimensual(decimal codAlumna)
         {

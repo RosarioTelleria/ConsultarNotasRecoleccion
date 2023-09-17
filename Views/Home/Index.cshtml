@@ -1,8 +1,22 @@
-﻿@model List<ConsultarNotasRecoleccion.Models.Calificaciones>
+﻿@model List<ConsultarNotasRecoleccion.Models.Calificaciones>;
 @{
     ViewData["Title"] = "Notas";
-    var suma = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.PsPrimeraEvalucionParcial).ToString("N");
-    var promedio = Math.Round(Convert.ToDecimal(suma) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2);
+    var suma = "";
+    var promedio = 0.00;
+    var bimensual = ViewBag.Bimensual;
+    @if (bimensual == "IB"){
+        suma = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.PsPrimeraEvalucionParcial).ToString("N");
+        promedio = Convert.ToDouble(Math.Round(Convert.ToDecimal(suma) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2));
+    }else if (bimensual == "IIB"){
+        suma = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.PsSegundaEvaluacionParcial).ToString("N");
+        promedio = Convert.ToDouble(Math.Round(Convert.ToDecimal(suma) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2));
+    }else if (bimensual == "IIIB"){
+        suma = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.SsPrimeraEvalucionParcial).ToString("N");
+        promedio = Convert.ToDouble(Math.Round(Convert.ToDecimal(suma) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2));
+    }else{
+        suma = Model.Where(y => y.CodigoCategoria != 0).Sum(x => x.SsSegundaEvaluacionParcial).ToString("N");
+        promedio = Convert.ToDouble(Math.Round(Convert.ToDecimal(suma) / Model.Where(x => x.CodigoCategoria != 0).Count(), 2));
+    }
 }
 
 <div class="card">
@@ -44,7 +58,7 @@
                                 ASIGNATURAS
                             </th>
                             <th>
-                                IB
+                                @bimensual
                             </th>
                             <th>
                                 Cat
@@ -54,17 +68,39 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            if (item.CodigoCategoria != 0)
+                        if (item.CodigoCategoria != 0)
                             {
                                 <tr>
                                     <td>
                                         @item.Asignatura
                                     </td>
                                     <td>
-                                        @item.PsPrimeraEvalucionParcial
+                                    @{
+                                        @if(bimensual == "IB"){
+                                            @item.PsPrimeraEvalucionParcial
+                                        }else if(bimensual == "IIB")
+                                        {
+                                            @item.PsSegundaEvaluacionParcial
+                                        }else if (bimensual == "IIIB")
+                                        {
+                                            @item.SsPrimeraEvalucionParcial
+                                            
+                                        }else{
+                                            @item.SsSegundaEvaluacionParcial
+                                        }
+                                    }                                  
                                     </td>
                                     <td>
+                                    @if (bimensual == "IB"){
                                         @item.Cat1p
+                                    }else if (bimensual == "IIB"){
+                                        @item.Cat2p
+                                    }else if (bimensual == "IIIB"){
+                                        @item.Cat1s
+                                    }else{
+                                        @item.Cat2s
+                                    }
+                                        
                                     </td>
                                 </tr>
                             }
